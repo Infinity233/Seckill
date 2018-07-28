@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Infinity.dao.SuccessKilledDao">
+
+    <resultMap id="successKilled" type="SuccessKilled">
+        <id column="seckill_id" property="seckillId"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="state" property="state"/>
+        <result column="create_time" property="createTime"/>
+        <association property="seckill" column="seckill_id" select="com.Infinity.dao.SeckillDao.queryById"/>
+    </resultMap>
+
+    <!--// 出现主键冲突的时候不保存，返回0-->
+    <insert id="insertSuccessKilled">
+        insert ignore into success_killed (seckill_id, user_phone, state)
+        values (#{seckillId}, #{userPhone}, 0)
+    </insert>
+
+    <select id="queryByIdWithSeckill" resultMap="successKilled">
+        select * from success_killed sk
+        where sk.seckill_id = #{seckillId}
+          and sk.user_phone = #{userPhone}
+    </select>
+
+</mapper>

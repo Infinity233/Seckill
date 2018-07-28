@@ -2,6 +2,7 @@ package com.Infinity.web;
 
 import com.Infinity.dto.Exposer;
 import com.Infinity.dto.SeckillExecution;
+import com.Infinity.dto.SeckillResult;
 import com.Infinity.entity.Seckill;
 import com.Infinity.enums.SeckillStatEnum;
 import com.Infinity.exception.RepeatKillException;
@@ -101,7 +102,6 @@ public class SeckillController {
     @ResponseBody
     public SeckillResult<Long> time() {
         Date now = new Date();
-        // dhajsdhkajshdkja
         return new SeckillResult<>(true, now.getTime());
     }
 }

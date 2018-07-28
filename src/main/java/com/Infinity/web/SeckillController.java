@@ -101,7 +101,7 @@ public class SeckillController {
     @ResponseBody
     public SeckillResult<Long> time() {
         Date now = new Date();
-
+        // dhajsdhkajshdkja
         return new SeckillResult<>(true, now.getTime());
     }
 }

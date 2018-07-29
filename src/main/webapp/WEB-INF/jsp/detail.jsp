@@ -1,24 +1,25 @@
-<%--
-  ~ Copyright (c) 2018. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
-  --%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: Infinity233
-  Date: 2018/7/28
-  Time: 21:24
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>秒杀详情页</title>
+    <%@ include file="common/head.jsp" %>
+    <%@ include file="common/tag.jsp" %>
 </head>
 <body>
 
+<div class="container">
+    <div class="panel panel-default text-center">
+        <div class="pannel-heading">
+            <h1>${seckill.name}     </h1>
+        </div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+</div>
+
 </body>
+<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>

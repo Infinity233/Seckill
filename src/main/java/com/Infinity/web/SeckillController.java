@@ -34,7 +34,6 @@ public class SeckillController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) {
-
         List<Seckill> seckillList = seckillService.getSeckillList();
         model.addAttribute("list", seckillList);
 

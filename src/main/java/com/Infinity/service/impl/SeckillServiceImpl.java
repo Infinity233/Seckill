@@ -91,16 +91,17 @@ public class SeckillServiceImpl implements SeckillService {
         // 执行秒杀逻辑：减库存+记录购买行为
         Date nowTime = new Date();
         try {
-            int updateCount = seckillDao.reduceNumber(seckillId, nowTime);
-            if (updateCount <= 0) {
-                // 没有更新到记录，秒杀结束 or 没库存了
-                throw new SeckillCloseException("seckill is closed");
+
+            int insertCount = successKilledDao.insertSuccessKilled(seckillId, userPhone);
+            if (insertCount <= 0) {
+                // 重复秒杀
+                throw new RepeatKillException("seckill repeated");
             } else {
-                // 减库存成功， 记录购买行为
-                int insertCount = successKilledDao.insertSuccessKilled(seckillId, userPhone);
-                if (insertCount <= 0) {
-                    // 重复秒杀
-                    throw new RepeatKillException("seckill repeated");
+                // 减库存，热点商品竞争
+                int updateCount = seckillDao.reduceNumber(seckillId, nowTime);
+                if (updateCount <= 0) {
+                    // 没有更新到记录，秒杀结束 or 没库存了
+                    throw new SeckillCloseException("seckill is closed");
                 } else {
                     // 秒杀成功
                     SuccessKilled successKilled = successKilledDao.queryByIdWithSeckill(seckillId, userPhone);
@@ -112,7 +113,6 @@ public class SeckillServiceImpl implements SeckillService {
             throw e1;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-
             // 所有编译器异常，转换为运行时异常
             throw new SeckillException("seckill inner error:" + e.getMessage());
         }

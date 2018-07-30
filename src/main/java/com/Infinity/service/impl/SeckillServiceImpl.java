@@ -2,6 +2,7 @@ package com.Infinity.service.impl;
 
 import com.Infinity.dao.SeckillDao;
 import com.Infinity.dao.SuccessKilledDao;
+import com.Infinity.dao.cache.RedisDao;
 import com.Infinity.dto.Exposer;
 import com.Infinity.dto.SeckillExecution;
 import com.Infinity.entity.Seckill;
@@ -30,13 +31,16 @@ public class SeckillServiceImpl implements SeckillService {
 
     private SuccessKilledDao successKilledDao;
 
+    private RedisDao redisDao;
+
     // md5盐值字符串，用于混淆MD5
     private final String salt = "d/as-d/*a-s/*%@H%K@JJK-fdef/a/h/h/u/yrDAS*/AS/*312312";
 
     @Autowired
-    public SeckillServiceImpl(SeckillDao seckillDao, SuccessKilledDao successKilledDao) {
+    public SeckillServiceImpl(SeckillDao seckillDao, SuccessKilledDao successKilledDao, RedisDao redisDao) {
         this.seckillDao = seckillDao;
         this.successKilledDao = successKilledDao;
+        this.redisDao = redisDao;
     }
 
     @Override
@@ -51,10 +55,17 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Exposer exportSeckillUrl(long seckillId) {
-
-        Seckill seckill = getById(seckillId);
+        // 优化点：缓存优化：超时的基础上维护一致性
+        // 1：访问redis
+        Seckill seckill = redisDao.getSeckill(seckillId);
         if (seckill == null) {
-            return new Exposer(false, seckillId);
+            // 2.访问数据库
+            seckill = seckillDao.queryById(seckillId);
+            if (seckill == null) {
+                return new Exposer(false, seckillId);
+            } else {
+                redisDao.putSeckill(seckill);
+            }
         }
 
         Date startTime = seckill.getStartTime();

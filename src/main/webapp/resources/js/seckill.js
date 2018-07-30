@@ -26,9 +26,7 @@ var seckill = {
                 if (exposer['exposed']) {
                     // 开启秒杀 获取秒杀地址
                     var md5 = exposer['md5'];
-                    var killUrl = seckill.URL.exposer(seckillId, md5);
 
-                    console.log('killUrl:' + killUrl);
                     // 绑定一次点击事件
                     $('#killBtn').one('click', function () {
                         // 绑定执行秒杀请
@@ -128,7 +126,6 @@ var seckill = {
                     var nowTime = result['data'];
 
                     // 时间判断
-                    console.log("seckillId: " + seckillId);
                     seckill.countdown(seckillId, nowTime, startTime, endTime);
                 }
                 else {
